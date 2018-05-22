@@ -2,7 +2,6 @@
 basic Engine of openGL and openVR, model&amp;material reader and basic shading
 chinese , no english╮(╯﹏╰）╭
 
-glm库真的是文件太多了。。后悔没打包传了。。
 
 基于opengl编写的引擎
 
@@ -11,7 +10,7 @@ glm库真的是文件太多了。。后悔没打包传了。。
 在基本opengl、openvr等接口方面有基本的易用的接口
 大概酱紫(～￣▽￣)～ 
 
-IDE用的vs2015-c++ 调用的库都在includeAndLib文件夹里面路径也是设置好的，但是好像需要机器有opengl
+IDE用的vs2015-c++ 32位debug/relese， 调用的库都在/VREngine/VREngineine/libAndInclude.zip压缩包里面,在原目录解压即可，但是好像需要机器有opengl,
 项目名字随便起的不要在意这些细节 (=´ω｀=)
 
 
