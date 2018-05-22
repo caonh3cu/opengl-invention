@@ -33,23 +33,27 @@ namespace Mymassage {
 
 	class MyWindow {
 	public:
+		//初始化window，传入宽高窗口名，返回对象指针
 		static MyWindow *InitWindow(int width, int height, string name) {
 			if (instance == NULL) {
 				instance = new MyWindow(width, height, name);
 			}
 			return instance;
 		}
+		//获取唯一实例指针
 		static MyWindow *getInstance() {
 			if (instance == NULL)
 				instance = new MyWindow();
 			return instance;
 		}
+		//设置鼠标位置，坐标是到窗口左上的像素数量
 		void setCursorPos(double x, double y) {
 			glfwSetCursorPos(window, x, y);
 		}
 		void close() {
 			glfwTerminate();
 		}
+		//每次渲染完调用
 		void flush() {
 			glfwSwapBuffers(window);
 			glfwPollEvents();
@@ -67,12 +71,15 @@ namespace Mymassage {
 				left, middle, right
 			};
 			union Value {
+				//鼠标事件
 				MauseEvent mause;
+				//键盘事件，值借用了glfw预定义的宏，如GLFW_KEY_W、GLFW_KEY_SPACE
 				unsigned char value;
 			};
 			Type type;
 			Value value;
 		};
+		//消息队列，从中读取各类消息，如上Message类
 		queue<Message> messagePump;
 	private:
 		static MyWindow* instance;
