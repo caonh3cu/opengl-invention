@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="code">
+      <UniqueIdentifier>{f96310da-ba2b-4506-a499-324d65a8bfa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="code\VRDriver">
+      <UniqueIdentifier>{2264490c-5e66-49b7-8532-f82089b274b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="code\massage">
+      <UniqueIdentifier>{52ea0e55-c04e-4662-a52f-cc0b2d900848}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="code\objects">
+      <UniqueIdentifier>{570dabab-1f72-4b80-8db9-7a7d5325d6f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="code\AssetManager">
+      <UniqueIdentifier>{805383a9-a79a-45db-903c-2577bbdb384c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="code\AssetManager\ModelClass">
+      <UniqueIdentifier>{544d0dc4-85ec-47fb-aa66-a2abc8855caf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="code\Scene">
+      <UniqueIdentifier>{a527b015-9829-4b44-b9f6-338e5d458c37}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="VRDriver\VRDriver.cpp">
+      <Filter>code\VRDriver</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>code</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetManager\AssetManager.cpp">
+      <Filter>code\AssetManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\scene.cpp">
+      <Filter>code\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="massage\myWindow.cpp">
+      <Filter>code\massage</Filter>
+    </ClCompile>
+    <ClCompile Include="object\object.cpp">
+      <Filter>code\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\2dScene.cpp">
+      <Filter>code\Scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="VRDriver\VRDriver.h">
+      <Filter>code\VRDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="VRDriver\CGLRenderModel.h">
+      <Filter>code\VRDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="object\object.h">
+      <Filter>code\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager\AssetManager.h">
+      <Filter>code\AssetManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager\ModelClass\mesh.h">
+      <Filter>code\AssetManager\ModelClass</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager\ModelClass\meterial.h">
+      <Filter>code\AssetManager\ModelClass</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager\ModelClass\Shader.h">
+      <Filter>code\AssetManager\ModelClass</Filter>
+    </ClInclude>
+    <ClInclude Include="object\camera.h">
+      <Filter>code\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\scene.h">
+      <Filter>code\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="object\light.h">
+      <Filter>code\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="massage\myWindow.h">
+      <Filter>code\massage</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\2dScene.h">
+      <Filter>code\Scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shader\shader1.fs">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\shader1.vs">
+      <Filter>shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt">
+      <Filter>code</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,3 @@
+model floor models/bed.obj 1
+shader shader1 2 shader/shader1.vs shader/shader1.fs 
+end
