@@ -49,7 +49,7 @@ public:
 	string normalPath, heightPath, lightmapPath, emissivePath;
 	GLuint normalId, heightId, lightmapId, emissiveId;
 	bool hasNormal, hasHeight, hasLightmap, hasEmissive;
-	
+	//将材质根据shader绑定uniform
 	unsigned int bindMeterial(GLuint shader, unsigned int startTexture = 0) {
 		glUniform3fv(glGetUniformLocation(shader, "material.specularColor"), 1, &(specularColor)[0]);
 		glUniform3fv(glGetUniformLocation(shader, "material.diffuseColor"), 1, &(diffuseColor)[0]);

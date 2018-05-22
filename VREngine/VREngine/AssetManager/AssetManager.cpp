@@ -4,6 +4,7 @@
 AssetManager* AssetManager::instance = NULL;
 
 void AssetManager::readConfig(string config) {
+	//注释掉的部分是按照文件读取的
 	//std::ifstream configFile;
 	//std::stringstream configStream;
 	//// ensures ifstream objects can throw exceptions:
