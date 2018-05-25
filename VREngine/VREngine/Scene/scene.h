@@ -21,6 +21,7 @@ using namespace glm;
 #include "../AssetManager/AssetManager.h"
 #include "../object/light.h"
 #include "../massage/myWindow.h"
+#include "../VRDriver/VRDriver.h"
 #include "2dScene.h"
 
 class SpecialCamera {
@@ -64,6 +65,7 @@ public:
 };
 
 
+
 class Scene {
 public:
 	Scene() {
@@ -77,9 +79,12 @@ public:
 	void run();
 private:
 	void draw();
+	void drawVR(bool isLeftEye);
 	bool handleInput();
 	bool progressMessage();
 private:
 	int width, height;
 	bool state[8];
+
+	VRDriver vr;
 };

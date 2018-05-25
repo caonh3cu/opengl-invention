@@ -43,74 +43,53 @@ void Scene::init() {
 	am->readConfig(config);
 	om->readConfig(config);
 	shader = am->shaderPrograms["shader1"];
-
+	
+	bool isSuccess = vr.Init();
+	if (isSuccess)
+		cout << "success init vr" << endl;
+	else
+		cout << "failed to init vr" << endl;
 }
 void Scene::run() {
-	light.position = vec3(-5, 5, 5);
-	camera.realCamera.pos = camera.virtualCamera.pos = vec3(0,3, 0);
 	//glUseProgram(shader);
 	//light.bindLight(shader);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	while (1) {
+		//handleInput中调用了vrDriver类的handleInput方法，更新头盔和手柄的位置
 		if (!handleInput())
 			break;
-		glClearColor(1.0f,1.0f,1.0f,1.0);
-		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-		glViewport(0, 0, width*2/3, height);
-		draw();
+		//左眼
+		vr.VRBegin(true);
+		drawVR(true);
+		vr.VREnd(true);
+		//右眼
+		vr.VRBegin(false);
+		drawVR(false);
+		vr.VREnd(false);
+		//提交
+		vr.Submit();
 
-		//固定管线
-		glUseProgram(0);
-		//分割线
-		glViewport(0, 0, width, height);
-		map2d::drawLine(vec2(1.0f / 3, 1), vec2(1.0f / 3, -1), vec3(0.3, 0.6, 0), 5);
-		map2d::drawLine(vec2(1.0f / 3, 0), vec2(1, 0), vec3(0.3, 0.6, 0), 5);
-
-		vec3 pos, dir;
-		//上面的地图
-		glViewport(width * 2 / 3, height / 2, width / 3, height / 2);
-		map2d::drawVirtul();
-		pos = (camera.realCamera.pos);
-		pos *= 0.2;
-		map2d::drawPoint(pos.x, pos.z, 10.0f);
-		dir = (pos + camera.realCamera.dir*0.15f);
-		map2d::drawLinv(vec2(pos.x, pos.z), vec2(dir.x, dir.z), vec3(0.8, 1.0, 0.5));
-
-		//下面的地图
-		glViewport(width * 2 / 3, 0, width / 3, height / 2);
-		glUseProgram(0);
-		map2d::drawReal();
-		pos = (camera.realCamera.pos);
-		pos *= 0.4;
-		map2d::drawPoint(pos.x,pos.z,20.0f);
-		dir = (pos+camera.realCamera.dir*0.3f);
-		map2d::drawLinv(vec2(pos.x, pos.z), vec2(dir.x, dir.z), vec3(0.8, 1.0, 0.5));
-		window->flush();
 	}
+	vr.Shutdown();
 	window->close();
 }
-void Scene::draw() {
+void Scene::drawVR(bool isLeftEye) {
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shader);
 	light.bindLight(shader);
-	glUniform3fv(glGetUniformLocation(shader, "viewPos"), 1, &(camera.virtualCamera.pos)[0]);
-	glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_FALSE, &(camera.virtualCamera.getViewMatrix())[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE, &(camera.virtualCamera.projectMat)[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(shader, "eyeMat"), 1, GL_FALSE, &(mat4(1.0f)[0][0]));
+	glUniform3fv(glGetUniformLocation(shader, "viewPos"), 1, &((vr.HMDPoseInverse)[3])[0]);
+	glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_FALSE, &(vr.HMDPoseInverse)[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE, &(vr.GetHMDMatrixProjectionEye(isLeftEye ? vr::Hmd_Eye::Eye_Left : vr::Hmd_Eye::Eye_Right,0.1,500))[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(shader, "eyeMat"), 1, GL_FALSE, &((vr.GetHMDMatrixPoseEye(isLeftEye ? vr::Hmd_Eye::Eye_Left : vr::Hmd_Eye::Eye_Right))[0][0]));
 	ObjectManager::getInstance()->drawAllObject(shader);
 }
 bool Scene::handleInput() {
 	if (!progressMessage()) return false;
 
-	if (state[0])camera.rollUp(0.015);
-	if (state[1])camera.rollLeft(0.015);
-	if (state[2])camera.rollUp(-0.015);
-	if (state[3])camera.rollLeft(-0.015);
-	if (state[4])camera.move(0.05, 0);
-	if (state[5])camera.move(-0.05, 0);
-	if (state[6])camera.move(0, 0.05);
-	if (state[7])camera.move(0, -0.05);
+	vr.HandleInput();
 
 	return true;
 }
