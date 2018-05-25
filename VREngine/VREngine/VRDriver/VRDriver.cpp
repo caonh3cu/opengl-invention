@@ -458,8 +458,8 @@ void VRDriver::UpdateHMDMatrixPose()
 	controllerNum = contrallerCount;
 	if (m_rTrackedDevicePose[vr::k_unTrackedDeviceIndex_Hmd].bPoseIsValid)
 	{
-		HMDPoseInverse = m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd];
-		HMDPose = inverse(HMDPoseInverse);
+		HMDPose = m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd];
+		HMDPoseInverse = inverse(HMDPose);
 	}
 }
 
