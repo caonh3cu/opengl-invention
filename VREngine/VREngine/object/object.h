@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <hash_map>
+#include <map>
 #include <string>
 using namespace std;
 
@@ -60,5 +60,5 @@ public:
 	void ObjectManager::drawObject(string name, GLuint shader);
 private:
 	static ObjectManager *instance;
-	hash_map<string,Object> objects;
+	map<string,Object> objects;
 };
