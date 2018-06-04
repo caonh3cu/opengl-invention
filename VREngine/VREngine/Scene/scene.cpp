@@ -44,10 +44,15 @@ void Scene::init() {
 	om->readConfig(config);
 	shader = am->shaderPrograms["shader1"];
 
+	light.position = vec3(-5, 5, 5);
+	
+	bool isSuccess = vr.Init();
+	if (isSuccess)
+		cout << "success init vr" << endl;
+	else
+		cout << "failed to init vr" << endl;
 }
 void Scene::run() {
-	light.position = vec3(-5, 5, 5);
-	camera.realCamera.pos = camera.virtualCamera.pos = vec3(0,3, 0);
 	//glUseProgram(shader);
 	//light.bindLight(shader);
 	glEnable(GL_DEPTH_TEST);
@@ -55,6 +60,15 @@ void Scene::run() {
 	while (1) {
 		if (!handleInput())
 			break;
+
+		vr.VRBegin(true);
+		drawVR(true);
+		vr.VREnd(true);
+		vr.VRBegin(false);
+		drawVR(false);
+		vr.VREnd(false);
+		vr.Submit();
+
 		glClearColor(1.0f,1.0f,1.0f,1.0);
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
@@ -98,6 +112,15 @@ void Scene::draw() {
 	glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_FALSE, &(camera.virtualCamera.getViewMatrix())[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE, &(camera.virtualCamera.projectMat)[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(shader, "eyeMat"), 1, GL_FALSE, &(mat4(1.0f)[0][0]));
+	ObjectManager::getInstance()->drawObject("floor",shader);
+}
+void Scene::drawVR(bool isLeftEye) {
+	glUseProgram(shader);
+	light.bindLight(shader);
+	glUniform3fv(glGetUniformLocation(shader, "viewPos"), 1, &((vr.GetHMDMatrixPoseEye(isLeftEye?vr::Hmd_Eye::Eye_Left:vr::Hmd_Eye::Eye_Right))[3])[0]);
+	glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_FALSE, &(vr.GetHMDMatrixPoseEye(isLeftEye ? vr::Hmd_Eye::Eye_Left : vr::Hmd_Eye::Eye_Right))[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE, &(vr.GetHMDMatrixProjectionEye(isLeftEye ? vr::Hmd_Eye::Eye_Left : vr::Hmd_Eye::Eye_Right,0.1,500))[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(shader, "eyeMat"), 1, GL_FALSE, &(mat4(1.0f)[0][0]));
 	ObjectManager::getInstance()->drawAllObject(shader);
 }
 bool Scene::handleInput() {
@@ -111,6 +134,8 @@ bool Scene::handleInput() {
 	if (state[5])camera.move(-0.05, 0);
 	if (state[6])camera.move(0, 0.05);
 	if (state[7])camera.move(0, -0.05);
+
+	vr.HandleInput();
 
 	return true;
 }
