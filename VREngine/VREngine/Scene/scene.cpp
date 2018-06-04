@@ -56,19 +56,19 @@ void Scene::run() {
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	while (1) {
-		//handleInputÖÐµ÷ÓÃÁËvrDriverÀàµÄhandleInput·½·¨£¬¸üÐÂÍ·¿øºÍÊÖ±úµÄÎ»ÖÃ
+		//handleInputä¸­è°ƒç”¨äº†vrDriverç±»çš„handleInputæ–¹æ³•ï¼Œæ›´æ–°å¤´ç›”å’Œæ‰‹æŸ„çš„ä½ç½®
 		if (!handleInput())
 			break;
 
-		//×óÑÛ
+		//å·¦çœ¼
 		vr.VRBegin(true);
 		drawVR(true);
 		vr.VREnd(true);
-		//ÓÒÑÛ
+		//å³çœ¼
 		vr.VRBegin(false);
 		drawVR(false);
 		vr.VREnd(false);
-		//Ìá½»
+		//æäº¤
 		vr.Submit();
 
 	}
@@ -84,7 +84,7 @@ void Scene::drawVR(bool isLeftEye) {
 	glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_FALSE, &(vr.HMDPoseInverse)[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE, &(vr.GetHMDMatrixProjectionEye(isLeftEye ? vr::Hmd_Eye::Eye_Left : vr::Hmd_Eye::Eye_Right,0.1,500))[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(shader, "eyeMat"), 1, GL_FALSE, &((vr.GetHMDMatrixPoseEye(isLeftEye ? vr::Hmd_Eye::Eye_Left : vr::Hmd_Eye::Eye_Right))[0][0]));
-	ObjectManager::getInstance()->drawAllObject(shader);
+	ObjectManager::getInstance()->drawObject("floor",shader);
 }
 bool Scene::handleInput() {
 	if (!progressMessage()) return false;
