@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <hash_map>
 #include <string>
 using namespace std;
 
@@ -42,6 +43,7 @@ protected:
 	void calculatModelMat() {
 		mat4 mat(1.0f);
 		mat = glm::translate(mat4(1.0f), pos)*glm::rotate(mat4(1.0f), angle, axis)*glm::scale(mat4(1.0f), this->scalev)*mat;
+		modelMat = mat;
 	}
 };
 
@@ -54,9 +56,9 @@ public:
 		}
 		return instance;
 	}
-	void readConfig(string config);
-	void drawAllObject(GLuint shader);
+	void readConfig(string config); 
+	void ObjectManager::drawObject(string name, GLuint shader);
 private:
 	static ObjectManager *instance;
-	vector<Object> objects;
+	hash_map<string,Object> objects;
 };

@@ -13,8 +13,9 @@ void ObjectManager::readConfig(string config) {
 		if (operation.compare("model") == 0) {
 			configStream >> values1 >> values2 >> valuei;
 			Object to(values1);
+			to.scale(vec3(0.3, 0.3, 0.3));
 			to.meshIndex = AssetManager::getInstance()->meshGroups[values1];
-			objects.push_back(to);
+			objects[values1] = to;
 		}
 		else if (operation.compare("shader") == 0) {
 			configStream >> values1 >> valuei;
@@ -25,13 +26,13 @@ void ObjectManager::readConfig(string config) {
 		configStream >> operation;
 	}
 }
-void ObjectManager::drawAllObject(GLuint shader) {
+void ObjectManager::drawObject(string name,GLuint shader) {
 	vector<Mesh*> &meshes = AssetManager::getInstance()->meshes;
-	for (int i = 0; i < objects.size(); i++) {
-		glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_FALSE, &(objects[i].getModelMat())[0][0]);
-		for (int j = objects[i].meshIndex.first; j < objects[i].meshIndex.second; j++) {
-			meshes[j]->meterial->bindMeterial(shader);
-			meshes[j]->Draw();
-		}
+	Object to = objects[name];
+	glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_FALSE, &(to.getModelMat())[0][0]);
+	for (int j = to.meshIndex.first; j < to.meshIndex.second; j++) {
+		meshes[j]->meterial->bindMeterial(shader);
+		meshes[j]->Draw();
 	}
+	
 }
