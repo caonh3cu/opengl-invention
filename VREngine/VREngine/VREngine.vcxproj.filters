@@ -49,6 +49,9 @@
     <ClCompile Include="Scene\2dScene.cpp">
       <Filter>code\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="AssetManager\Loader.cpp">
+      <Filter>code\AssetManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VRDriver\VRDriver.h">
@@ -95,9 +98,18 @@
     <None Include="shader\shader1.vs">
       <Filter>shader</Filter>
     </None>
+    <None Include="shader\box_shader.fs">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\box_shader.vs">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt">
+      <Filter>code</Filter>
+    </Text>
+    <Text Include="config.txt">
       <Filter>code</Filter>
     </Text>
   </ItemGroup>

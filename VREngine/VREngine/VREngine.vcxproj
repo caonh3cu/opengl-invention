@@ -122,6 +122,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AssetManager\AssetManager.cpp" />
+    <ClCompile Include="AssetManager\Loader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="massage\myWindow.cpp" />
     <ClCompile Include="object\object.cpp" />
@@ -144,10 +145,13 @@
     <ClInclude Include="VRDriver\VRDriver.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shader\box_shader.fs" />
+    <None Include="shader\box_shader.vs" />
     <None Include="shader\shader1.fs" />
     <None Include="shader\shader1.vs" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="config.txt" />
     <Text Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
