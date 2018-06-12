@@ -68,16 +68,18 @@ namespace Mymassage {
 		class Message {
 		public:
 			enum Type {
-				mousePress, mouseRelese, keybordPress, keybordRelese, window, unknow
+				mousePress, mouseRelese, keybordPress, keybordRelese, window, unknow, mouseMove
 			};
 			enum MauseEvent {
 				left, middle, right
 			};
 			union Value {
+				Value(){}
 				//鼠标事件
-				MauseEvent mause;
+				MauseEvent mouse;
 				//键盘事件，值借用了glfw预定义的宏，如GLFW_KEY_W、GLFW_KEY_SPACE
 				int value;
+				vec2 pos;
 			};
 			Type type;
 			Value value;

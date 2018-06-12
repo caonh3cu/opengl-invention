@@ -37,13 +37,13 @@ namespace Mymassage {
 		switch (button)
 		{
 		case GLFW_MOUSE_BUTTON_LEFT:
-			m.value.mause = MyWindow::Message::MauseEvent::left;
+			m.value.mouse = MyWindow::Message::MauseEvent::left;
 			break;
 		case GLFW_MOUSE_BUTTON_MIDDLE:
-			m.value.mause = MyWindow::Message::MauseEvent::middle;
+			m.value.mouse = MyWindow::Message::MauseEvent::middle;
 			break;
 		case GLFW_MOUSE_BUTTON_RIGHT:
-			m.value.mause = MyWindow::Message::MauseEvent::right;
+			m.value.mouse = MyWindow::Message::MauseEvent::right;
 			break;
 		default:
 			return;
@@ -55,6 +55,11 @@ namespace Mymassage {
 	{
 		xpos = float((x - width / 2) / width) * 2;
 		ypos = float(0 - (y - height / 2) / height) * 2;
+
+		MyWindow::Message m;
+		m.type = MyWindow::Message::mouseMove;
+		m.value.pos = vec2(xpos, ypos);
+		MyWindow::getInstance()->messagePump.push(m);
 		return;
 	}
 	void scroll_callback(GLFWwindow* window, double x, double y)
