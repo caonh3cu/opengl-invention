@@ -43,6 +43,9 @@ void Scene::init() {
 	}
 
 	frameNum = 0;
+	
+	
+	ObjectManager::getInstance()->objects["floor"].scale(vec3(2, 2, 2));
 
 }
 
@@ -75,19 +78,19 @@ void Scene::run() {
 			break;
 
 		if (hasVR) {
-			//×óÑÛ
+			//å·¦çœ¼
 			vr.VRBegin(true);
 			glClearColor(1.0f, 1.0f, 1.0f, 1.0);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			draw(true);
 			vr.VREnd(true);
-			//ÓÒÑÛ
+			//å³çœ¼
 			vr.VRBegin(false);
 			glClearColor(1.0f, 1.0f, 1.0f, 1.0);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			draw(false);
 			vr.VREnd(false);
-			//Ìá½»
+			//æäº¤
 			vr.Submit();
 		}
 		else {
@@ -104,7 +107,7 @@ void Scene::run() {
 	window->close();
 }
 
-//»­³¡¾°
+//ç”»åœºæ™¯
 void Scene::draw(bool isLeftEye) {
 	glUseProgram(shader);
 	light.bindLight(shader);
@@ -119,6 +122,7 @@ void Scene::draw(bool isLeftEye) {
 		glUniformMatrix4fv(glGetUniformLocation(shader, "eyeMat"), 1, GL_FALSE, &(mat4(1.0f)[0][0]));
 	}
 	ObjectManager::getInstance()->drawObject("migong", shader);
+	ObjectManager::getInstance()->drawObject("floor", shader);
 
 	glUseProgram(shaderBox);
 	glUniform3fv(glGetUniformLocation(shaderBox, "viewPos"), 1, &(camera.getVirtulPos())[0]);
@@ -134,12 +138,12 @@ void Scene::draw(bool isLeftEye) {
 	ObjectManager::getInstance()->drawObject("box", shaderBox);
 }
 
-//»­Á½¸öµØÍ¼
+//ç”»ä¸¤ä¸ªåœ°å›¾
 void Scene::draw2D() {
-	//¹Ì¶¨¹ÜÏß
+	//å›ºå®šç®¡çº¿
 	glUseProgram(0);
 	vec4 pos, dir;
-	//·Ö¸îÏß
+	//åˆ†å‰²çº¿
 	if (hasVR) {
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -151,7 +155,7 @@ void Scene::draw2D() {
 		map2d::drawLine(vec2(1.0f / 3, 0), vec2(1.0f, 0), vec3(0.3, 0.6, 0), 5);
 		map2d::drawLine(vec2(1.0f / 3, -1.0f), vec2(1.0f / 3, -1.0f), vec3(0.3, 0.6, 0), 5);
 	}
-	//ÉÏÃæµÄµØÍ¼
+	//ä¸Šé¢çš„åœ°å›¾
 	if (hasVR)
 		glViewport(0, height / 2, width, height / 2);
 	else
@@ -162,10 +166,10 @@ void Scene::draw2D() {
 	pos /= 4.0f * pos.w;
 	map2d::drawPoint(pos.x, pos.z, 10.0f);
 	dir = (pos + camera.getVirtulDir()*0.15f);
-	//³¯Ïò
+	//æœå‘
 	map2d::drawLinv(vec2(pos.x, pos.z), vec2(dir.x, dir.z), vec3(0.8, 1.0, 0.5));
 
-	//ÏÂÃæµÄµØÍ¼
+	//ä¸‹é¢çš„åœ°å›¾
 	if (hasVR)
 		glViewport(0, 0, width, height / 2);
 	else
@@ -175,7 +179,7 @@ void Scene::draw2D() {
 	pos *= 0.4 / pos.w;
 	map2d::drawPoint(pos.x, pos.z, 20.0f);
 	dir = (pos + camera.getRealDir()*0.3f);
-	//·½Ïò
+	//æ–¹å‘
 	map2d::drawLinv(vec2(pos.x, pos.z), vec2(dir.x, dir.z), vec3(1.0, 1.0, 0.5));
 
 }
