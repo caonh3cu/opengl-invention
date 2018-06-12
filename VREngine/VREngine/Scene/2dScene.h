@@ -10,7 +10,7 @@
 #include <glm/gtc/type_ptr.hpp>
 using namespace glm;
 
-#define V_WALL_NUM 10
+#define V_WALL_NUM 12
 #define BOUNDARY 0.8f
 namespace map2d {
 

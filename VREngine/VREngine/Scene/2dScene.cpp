@@ -3,20 +3,20 @@
 
 
 vec2 map2d::vWall[V_WALL_NUM * 2] = {
-	vec2(0.85,0.85),vec2(0.85,-0.85),
-	vec2(0,0),vec2(0,0),
-	vec2(0,0),vec2(0,0),
+	vec2(0.9f,-2.9f),	vec2(-0.8f,-2.9f),
+	vec2(-0.8f,-2.9f),	vec2(-0.8f,-5.8f),
+	vec2(0.9f,-5.8f),	vec2(0.9f,-2.9f),
+	vec2(-0.8f,-5.8f),	vec2(0.9f,-5.8f),
 
-	vec2(0,0),vec2(0,0),
-	vec2(0,0),vec2(0,0),
-	vec2(0,0),vec2(0,0),
+	vec2(2.9f,-2.9f),	vec2(4.6f,-2.9f),
+	vec2(4.6f,-2.9f),	vec2(4.6f,-5.8f),
+	vec2(2.9f,-5.8f),	vec2(2.9f,-2.9f),
+	vec2(4.6f,-5.8f),	vec2(2.9f,-5.8f),
 
-	vec2(0,0),vec2(0,0),
-	vec2(0,0),vec2(0,0),
-	vec2(0,0),vec2(0,0),
-
-	vec2(0,0),vec2(0,0),
-
+	vec2(2.9f,-0.9f),	vec2(4.6f,-0.9f),
+	vec2(4.6f,-0.9f),	vec2(4.6f,2.0f),
+	vec2(2.9f,2.0f),	vec2(4.6f,2.0f),
+	vec2(2.9f,2.0f),	vec2(2.9f,-0.9f)
 };
 
 
@@ -89,8 +89,8 @@ void map2d::drawVirtul() {
 	//Íø¸ñ
 	drawLine(vec2(1, 0), vec2(-1, 0), vec3(1, 0.85, 0.85));
 	drawLine(vec2(0, -1), vec2(0, 1), vec3(1, 0.85, 0.85));
-	for (int i = 0; i<V_WALL_NUM; i++)
-		drawLine(vWall[i * 2], vWall[i * 2 + 1], vec3(1, 0.3, 0.3));
+	for (int i = 0; i < V_WALL_NUM; i++)
+		drawLine((vWall[i * 2] + vec2(-1.9f, 1.9f)) / 4.0f , (vWall[i * 2 + 1] + vec2(-1.9f, 1.9f)) / 4.0f  , vec3(1, 0.3, 0.3));
 
 	for (float i = -0.9; i < 0.99; i += 0.2) {
 		if (fabs(fabs(i) - BOUNDARY)>0.01) {

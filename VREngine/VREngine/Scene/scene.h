@@ -4,6 +4,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <time.h>
 using namespace std;
 
 #ifndef GLEW_STATIC
@@ -19,67 +20,84 @@ using namespace glm;
 #include "../object/object.h"
 #include "../object/camera.h"
 #include "../AssetManager/AssetManager.h"
+#include "../AssetManager/Loader.h"
 #include "../object/light.h"
 #include "../massage/myWindow.h"
 #include "2dScene.h"
 
+#include "../VRDriver/VRDriver.h"
+
+#include "../redirectionController/redirectionController.h"
+
+
 class SpecialCamera {
 public:
-	SpecialCamera(
-		float _nearClip = 1.0f,
-		float _farClip = 500.0f,
-		float _FOV = 90.0f,
-		float _aspect = 1.0f,
-		vec3 _pos = vec3(0),
-		float _pitch = 0,
-		float _yaw = 0,
-		float _roll = 0)
-		:realCamera(_nearClip, _farClip, _FOV, _aspect, _pos, _pitch, _yaw, _roll),
-		virtualCamera(_nearClip, _farClip, _FOV, _aspect, _pos, _pitch, _yaw, _roll) { }
-	void move(float front, float left) {
-		realCamera.move(front, left);
-		virtualCamera.move(front, left);
+	SpecialCamera():trans(1.0f){ }
+	void updateView(mat4 HMDview) {
+		realView = HMDview;
+		virtualView = realView*trans;
 	}
-	void rollUp(float r) {
-		realCamera.rollUp(r);
-		virtualCamera.rollUp(r);
-	}
-	void rollLeft(float r) {
-		realCamera.rollLeft(r);
-		virtualCamera.rollLeft(r);
-	}
-	void rollVirtualLeft(float r) {
-		virtualCamera.rollLeft(r);
-	}
-
+	void reset() { trans = mat4(1.0f); }
 	mat4 getRealViewMatrix() {
-		return realCamera.getViewMatrix();
+		return realView;
 	}
 	mat4 getVirtualViewMatrix() {
-		return virtualCamera.getViewMatrix();
+		return virtualView;
 	}
-	mat4 getProjectionMatrix() { return virtualCamera.projectMat; }
 
-	Camera realCamera, virtualCamera;
+	vec4 getRealPos() {
+		return inverse(realView)[3];
+	}
+	vec4 getRealDir() {
+		return -inverse(realView)[2];
+	}
+	vec4 getVirtulPos() {
+		return inverse(virtualView)[3];
+	}
+	vec4 getVirtulDir() {
+		return -inverse(virtualView)[2];
+	}
+
+	mat4 virtualView, realView;
+private:
+	mat4 trans;
 };
 
 
 class Scene {
 public:
 	Scene() {
+		for (int i = 0; i < STATE_NUM; i++) state[i] = false;
 	}
 	void init();
 
-	Mymassage::MyWindow* window;
-	GLuint shader;
-	SpecialCamera camera;
-	Light light;
 	void run();
 private:
-	void draw();
+	void draw2D();
+	void draw(bool isLeftEye);
 	bool handleInput();
 	bool progressMessage();
 private:
 	int width, height;
-	bool state[8];
+	enum State {
+		W = 0, A = 1, S = 2, D = 3, Q = 4, E = 5, P = 6,
+		isOutFileOpen = 7, SPACE = 10,gameStart = 11
+	};
+	const static int STATE_NUM = 20;
+	bool state[STATE_NUM];
+
+	VRDriver vr;
+
+	//记录的文件流
+	ofstream os;
+	void readSet(string config);
+	bool hasVR;
+
+	Mymassage::MyWindow* window;
+	int frameNum;
+
+	GLuint shader, shaderBox;
+	SpecialCamera camera;
+	Camera cameraNoVR;
+	Light light;
 };
