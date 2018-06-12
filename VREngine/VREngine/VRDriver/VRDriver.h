@@ -91,4 +91,6 @@ public:
 	//头盔位置和手柄位置，手柄数量
 	mat4 HMDPose, HMDPoseInverse, m_mat4Contraller1Pose, m_mat4Contraller2Pose;
 	int controllerNum;
+
+	bool press_button;
 };

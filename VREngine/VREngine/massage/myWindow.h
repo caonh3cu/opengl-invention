@@ -50,6 +50,9 @@ namespace Mymassage {
 		void setCursorPos(double x, double y) {
 			glfwSetCursorPos(window, x, y);
 		}
+		double getTime() {
+			return glfwGetTime();
+		}
 		void close() {
 			glfwTerminate();
 		}
@@ -74,7 +77,7 @@ namespace Mymassage {
 				//鼠标事件
 				MauseEvent mause;
 				//键盘事件，值借用了glfw预定义的宏，如GLFW_KEY_W、GLFW_KEY_SPACE
-				unsigned char value;
+				int value;
 			};
 			Type type;
 			Value value;

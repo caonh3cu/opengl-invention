@@ -4,27 +4,7 @@
 AssetManager* AssetManager::instance = NULL;
 
 void AssetManager::readConfig(string config) {
-	//注释掉的部分是按照文件读取的
-	//std::ifstream configFile;
-	//std::stringstream configStream;
-	//// ensures ifstream objects can throw exceptions:
-	//configFile.exceptions(std::ifstream::badbit);
-	//try
-	//{
-	//	// Open files
-	//	configFile.open(path);;
-	//	if (!configFile.is_open()) {
-	//		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
-	//	}
-	//	// Read file's buffer contents into streams
-	//	configStream << configFile.rdbuf();
-	//	// close file handlers
-	//	configFile.close();
-	//}
-	//catch (std::ifstream::failure e)
-	//{
-	//	std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
-	//}
+	cout << "loading meshes" << endl;
 	stringstream configStream;
 	configStream.str(config);
 	string operation, values1, values2, values3;
@@ -57,9 +37,6 @@ void AssetManager::readConfig(string config) {
 					cout << "shader program name not unique: " << values1 << endl;
 				}
 			}
-		}
-		else {
-			cout << "not understand operation" << operation << endl;
 		}
 		configStream >> operation;
 	}

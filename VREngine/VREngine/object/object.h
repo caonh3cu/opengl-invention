@@ -31,6 +31,7 @@ public:
 	pair<int,int> meshIndex;
 	void setModelMat(mat4 mat) { modelMat = mat; }
 	void translate(vec3 v) { pos += v; calculatModelMat(); }
+	void setPos(vec3 v) { pos = v; calculatModelMat();}
 	void rotate(float _angle, vec3 _axis) { angle = _angle; axis = _axis; calculatModelMat(); }
 	void scale(vec3 v) { this->scalev = vec3(this->scalev.x*v.x, this->scalev.y*v.y, this->scalev.z*v.z); calculatModelMat(); }
 	mat4 getModelMat() { return modelMat; }
@@ -58,7 +59,7 @@ public:
 	}
 	void readConfig(string config); 
 	void ObjectManager::drawObject(string name, GLuint shader);
+	map<string,Object> objects;
 private:
 	static ObjectManager *instance;
-	map<string,Object> objects;
 };

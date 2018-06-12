@@ -9,7 +9,6 @@ layout (location = 2) in vec2 texCoords;
 out vec2 TexCoords;
 out vec3 fragPosition;
 out vec3 Normal;
-out float alpha;
 
 uniform mat4 model;
 uniform mat4 view;

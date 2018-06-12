@@ -9,7 +9,6 @@ layout (location = 2) in vec2 texCoords;
 out vec2 TexCoords;
 out vec3 fragPosition;
 out vec3 Normal;
-out float alpha;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -20,7 +19,6 @@ void main()
 {
 	vec4 pos = eyeMat*view*model*vec4(position,1.0f);
 	gl_Position = projection*pos;
-
 
     fragPosition = vec3(model * vec4(position, 1.0f));
     Normal = mat3(transpose(inverse(model))) * normal;

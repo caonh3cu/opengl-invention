@@ -31,11 +31,9 @@ struct PointLight {
 in vec3 fragPosition;
 in vec3 Normal;
 in vec2 TexCoords;
-in float alpha;
 
 out vec4 color;
 
-uniform float radians;
 uniform vec3 viewPos;
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform Material material;
@@ -61,14 +59,8 @@ void main()
     if(material.hasLightmap==1)
 		color *= texture(material.lightmapTexture, TexCoords).r;
 	
-	float tr = abs(radians)/182.0*2-1;
-	float alpha = -1.0f;
-	if(gl_FragCoord.x/900*2-1 < tr && (tr > -1.0f && tr <= 1.0f))
-	    alpha = (gl_FragCoord.x/900*2)/(tr + 1);
-	else
-	    alpha = 1.0f;
-	float rate = abs(radians)/190.0*2-1;
-	color = alpha * vec4(result, 1.0f) + (1 - alpha) * vec4(0.0f, 0.0f, 0.0f, 1.0f); 
+	
+	color = vec4(result, 1.0f); 
 
 }
 

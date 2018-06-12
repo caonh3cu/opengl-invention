@@ -121,6 +121,15 @@ public:
 		dir = normalize(vec3(d));
 		up = normalize(vec3(u));
 	}
+	void rollLeftFromPoint(float r,vec3 Pos) {
+		vec4 d(dir, 0), u(up, 0),p(pos,1);
+		d = translate(mat4(1.0f), Pos)*rotate(mat4(1.0f), r, vec3(0, 1, 0))*translate(mat4(1.0f), -Pos)*d;
+		u = translate(mat4(1.0f), Pos)*rotate(mat4(1.0f), r, vec3(0, 1, 0))*translate(mat4(1.0f), -Pos)*u;
+		p = translate(mat4(1.0f), Pos)*rotate(mat4(1.0f), r, vec3(0, 1, 0))*translate(mat4(1.0f), -Pos)*p;
+		dir = normalize(vec3(d));
+		up = normalize(vec3(u));
+		pos = vec3(p / p.w);
+	}
 	mat4 getViewMatrix() {
 		return lookAt(pos, pos + vec3(dir), vec3(up));
 	}

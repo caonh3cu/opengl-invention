@@ -132,7 +132,7 @@ bool VRDriver::Init()
 		printf("%s - Failed to initialize VR Compositor!\n", __FUNCTION__);
 		return false;
 	}
-
+	press_button = false;
 
 	return true;
 }
@@ -322,6 +322,9 @@ void VRDriver::ProcessVREvent(const vr::VREvent_t & event)
 	}
 	break;
 	case vr::VREvent_ButtonPress:{
+		if (event.data.controller.button == vr::k_EButton_Axis1) {
+			press_button = true;
+		}
 	}
 	break;
 	case vr::VREvent_TrackedDeviceActivated:
