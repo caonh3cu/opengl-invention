@@ -27,7 +27,6 @@ using namespace glm;
 
 #include "../VRDriver/VRDriver.h"
 
-#include "../redirectionController/redirectionController.h"
 
 
 class SpecialCamera {
@@ -88,7 +87,7 @@ private:
 
 	VRDriver vr;
 
-	//记录的文件流
+	//录脟脗录碌脛脦脛录镁脕梅
 	ofstream os;
 	void readSet(string config);
 	bool hasVR;
