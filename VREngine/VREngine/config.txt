@@ -1,5 +1,6 @@
 model migong models/bed.obj 1
 model box models/sky_sphere.obj 1
+model floor models/floor.obj 1
 shader roll 2 shader/roll.vs shader/roll.fs 
 shader box 2 shader/box_shader.vs shader/box_shader.fs 
 set hasVR false
