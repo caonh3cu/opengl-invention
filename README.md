@@ -11,7 +11,7 @@ chinese , no english╮(╯﹏╰）╭
 在基本opengl、openvr等接口方面有基本的易用的接口
 大概酱紫(～￣▽￣)～ 
 
-IDE用的vs2015-c++ 32位debug/relese（一定要切到x86才能运行起来，不然就要换64位的各种库），<font size="3" color="red"><b> 调用的库都在/VREngine/VREngineine/libAndInclude.zip压缩包里面,在原目录解压即可</b></font>，但是好像需要机器有opengl,
+IDE用的vs2015-c++ 32位debug/relese（一定要切到x86才能运行起来，不然就要换64位的各种库），<font size="20" color="red"><b> 调用的库都在/VREngine/VREngineine/libAndInclude.zip压缩包里面,在原目录解压即可</b></font>，但是好像需要机器有opengl,
 项目名字随便起的不要在意这些细节 (=´ω｀=)
 <br/>
 <br/>
