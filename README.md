@@ -33,3 +33,4 @@ IDE用的vs2015-c++ 32位debug/relese（一定要切到x86才能运行起来，�
 8-14：添加了64位的外部库，这样就可以用64位编译运行了<br/>
 首先要解压includeAndLib64.zip到所在目录,然后vs里需要设置一下路径和lib的引用<br/>
 另外<b>一定要把includeAndLib64里面的dll拿出来替换掉\VREngine\VREngine下的dll，因为那里面的dll还是32位的！！！</b>
+ps:代码不用改，但是32位和64位用的各个库版本不一定相同，不知道会不会出什么问题ヽ(￣▽￣)ﾉ
