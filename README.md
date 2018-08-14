@@ -11,11 +11,11 @@ chinese , no english╮(╯﹏╰）╭
 在基本opengl、openvr等接口方面有基本的易用的接口
 大概酱紫(～￣▽￣)～ 
 
-IDE用的vs2015-c++ 32位debug/relese（一定要切到x86才能运行起来，不然就要换64位的各种库）， 调用的库都在/VREngine/VREngineine/libAndInclude.zip压缩包里面,在原目录解压即可，但是好像需要机器有opengl,
-项目名字随便起的不要在意这些细节 (=´ω｀=)
-
-
-
+IDE用的vs2015-c++ 32位debug/relese（一定要切到x86才能运行起来，不然就要换64位的各种库），<b> 调用的库都在/VREngine/VREngineine/libAndInclude.zip压缩包里面,在原目录解压即可</b>，但是好像需要机器有opengl,
+项目名字随便起的不要在意这些细节 (=´ω｀=)
+<br/>
+<br/>
+<br/>
 运行图挂目录里面了，好像显示不了。。。程序如果能运行的话就是wasd控制摄像头旋转，ijkl移动，esc退出
 
 具体注释一点一点写吧，就酱(～￣▽￣)～ 
