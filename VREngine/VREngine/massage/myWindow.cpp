@@ -58,7 +58,7 @@ namespace Mymassage {
 
 		MyWindow::Message m;
 		m.type = MyWindow::Message::mouseMove;
-		m.value.pos = vec2(xpos, ypos);
+		m.value.pos = glm::vec2(xpos, ypos);
 		MyWindow::getInstance()->messagePump.push(m);
 		return;
 	}
