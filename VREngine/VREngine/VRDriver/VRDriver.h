@@ -23,6 +23,20 @@ using namespace std;
 #include <openvr/openvr.h>
 
 #include "CGLRenderModel.h"
+
+//VRDriver类：就是驱动vr的，官方给的示例代码改的，简化了一下，手柄和定位器显示的部分我给删了
+//这里我用的设备是vive，版本不记得了
+//主要过程就是先init() //常规套路
+//渲染的时候先调用 VRBegin(); 然后渲染;  然后调用VREnd(); 最后submit()
+//实际上是绑定一个帧缓存然后渲染最后提交的过程，也可以直接获取帧缓存，但是这部分我还没写o(*￣3￣)o
+//
+//消息部分是调用HandleInput()来更新头盔和手柄位置，处理各种事件，这里我没写事件队列，
+//需要亲自去ProcessVREvent()里改写事件处理过程
+//
+//另外HandleInput()和submit()两个函数的调用顺序steam有过建议，
+//说要在提交后马上更新位置，还是在更新位置后马上提交，我忘了，也忘了在哪里看的了_(:3 | ∠)_
+//
+//这个代码已经测试过了，使用方法在另一个fork里面，我也不知道这样是否应该这样管理反正先这样吧。
 class VRDriver
 {
 public:
@@ -32,15 +46,15 @@ public:
 	bool Init(); 
 	void Shutdown();
 
-	//��VRBegin��VREnd֮���ͼ���Ѿ����ú�viewport��clearcolor��һ��begin��end��������Ҫһ��
+	//在VRBegin和VREnd之间绘图，已经设置好viewport和clearcolor，一对begin和end的左右眼要一致
 	void VRBegin(bool isLeftEye);
 	void VREnd(bool isLeftEye);
-	//�ύ֡���浽VR�豸
+	//提交帧缓存到VR设备
 	void Submit();
-	//�������룬Ҫ���õ�ProcessVREvent
+	//处理输入，要调用到ProcessVREvent
 	bool HandleInput();
 
-	//��ȡProjection Matrix��PoseEye Matrix���޷������ӽǴ�С
+	//获取Projection Matrix和PoseEye Matrix，无法设置视角大小
 	glm::mat4 GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye, float nearClip, float farClip);
 	glm::mat4 GetHMDMatrixPoseEye(vr::Hmd_Eye nEye);
 
@@ -72,7 +86,7 @@ private:
 
 
 public:
-	//֡����
+	//帧缓存
 	struct FramebufferDesc
 	{
 		GLuint m_nDepthBufferId;
@@ -83,12 +97,12 @@ public:
 		int width;
 		int height;
 	};
-	//������֡����
+	//左右眼帧缓存
 	FramebufferDesc leftEyeDesc;
 	FramebufferDesc rightEyeDesc;
 	bool CreateFrameBuffer(int nWidth, int nHeight, FramebufferDesc &framebufferDesc);
 
-	//ͷ��λ�ú��ֱ�λ�ã��ֱ�����
+	//头盔位置和手柄位置，手柄数量
 	glm::mat4 HMDPose, HMDPoseInverse, m_mat4Contraller1Pose, m_mat4Contraller2Pose;
 	int controllerNum;
 
