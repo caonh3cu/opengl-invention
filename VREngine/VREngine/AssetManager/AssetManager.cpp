@@ -103,7 +103,7 @@ void AssetManager::processMesh(string path, aiMesh* mesh, const aiScene* scene, 
 		vector.x = mesh->mVertices[i].x;
 		vector.y = mesh->mVertices[i].y;
 		vector.z = mesh->mVertices[i].z;
-		vec3 tp(vector.x, vector.y, vector.z);
+		glm::vec3 tp(vector.x, vector.y, vector.z);
 		tp.x > aabb.xmax ? aabb.xmax = tp.x : 0;
 		tp.x < aabb.xmin ? aabb.xmin = tp.x : 0;
 		tp.y > aabb.ymax ? aabb.ymax = tp.y : 0;
@@ -162,7 +162,7 @@ void AssetManager::processMesh(string path, aiMesh* mesh, const aiScene* scene, 
 				aiString textPath;
 				//diffuse
 				mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-				meterial.diffuseColor = vec3(color.r,color.g,color.b);
+				meterial.diffuseColor = glm::vec3(color.r,color.g,color.b);
 				if (mat->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
 					mat->GetTexture(aiTextureType_DIFFUSE, 0, &textPath);
 					meterial.diffusePath = path +"/"+ textPath.C_Str();
@@ -171,7 +171,7 @@ void AssetManager::processMesh(string path, aiMesh* mesh, const aiScene* scene, 
 
 				//
 				mat->Get(AI_MATKEY_COLOR_AMBIENT, color);
-				meterial.ambientColor = vec3(color.r, color.g, color.b);
+				meterial.ambientColor = glm::vec3(color.r, color.g, color.b);
 				if (mat->GetTextureCount(aiTextureType_AMBIENT) > 0) {
 					mat->GetTexture(aiTextureType_AMBIENT, 0, &textPath);
 					meterial.ambientPath = path + "/" + textPath.C_Str();
@@ -179,7 +179,7 @@ void AssetManager::processMesh(string path, aiMesh* mesh, const aiScene* scene, 
 				}
 
 				mat->Get(AI_MATKEY_COLOR_SPECULAR, color);
-				meterial.specularColor = vec3(color.r, color.g, color.b);
+				meterial.specularColor = glm::vec3(color.r, color.g, color.b);
 				if (mat->GetTextureCount(aiTextureType_SPECULAR) > 0) {
 					mat->GetTexture(aiTextureType_SPECULAR, 0, &textPath);
 					meterial.specularPath = path + "/" + textPath.C_Str();

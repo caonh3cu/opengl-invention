@@ -10,7 +10,7 @@ using namespace std;
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-using namespace glm;
+//using namespace glm;
 
 #ifndef GLEW_STATIC
 #define GLEW_STATIC  

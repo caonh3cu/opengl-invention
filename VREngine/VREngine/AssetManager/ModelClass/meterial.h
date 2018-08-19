@@ -15,7 +15,7 @@ using namespace std;
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-using namespace glm;
+//using namespace glm;
 
 #include <SOIL/SOIL.h>
 
@@ -39,7 +39,7 @@ public:
 
 	}
 	string name;
-	vec3 specularColor, diffuseColor, ambientColor;
+	glm::vec3 specularColor, diffuseColor, ambientColor;
 	float shininess;
 	string specularPath, diffusePath, ambientPath, shininessPath;
 	GLuint specularId, diffuseId, ambientId, shininessId;
