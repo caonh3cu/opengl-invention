@@ -18,7 +18,7 @@ using namespace std;
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-using namespace glm;
+//using namespace glm;
 
 #include <openvr/openvr.h>
 
@@ -41,8 +41,8 @@ public:
 	bool HandleInput();
 
 	//获取Projection Matrix和PoseEye Matrix，无法设置视角大小
-	mat4 GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye, float nearClip, float farClip);
-	mat4 GetHMDMatrixPoseEye(vr::Hmd_Eye nEye);
+	glm::mat4 GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye, float nearClip, float farClip);
+	glm::mat4 GetHMDMatrixPoseEye(vr::Hmd_Eye nEye);
 
 private:
 	void ProcessVREvent(const vr::VREvent_t & event);
@@ -50,13 +50,13 @@ private:
 	bool SetupStereoRenderTargets();
 
 	void UpdateHMDMatrixPose();
-	mat4 ConvertSteamVRMatrixToMatrix4(const vr::HmdMatrix34_t &matPose);
+	glm::mat4 ConvertSteamVRMatrixToMatrix4(const vr::HmdMatrix34_t &matPose);
 
 private:
 	vr::IVRSystem *m_pHMD;
 
 	vr::TrackedDevicePose_t m_rTrackedDevicePose[vr::k_unMaxTrackedDeviceCount];
-	mat4 m_rmat4DevicePose[vr::k_unMaxTrackedDeviceCount];
+	glm::mat4 m_rmat4DevicePose[vr::k_unMaxTrackedDeviceCount];
 	bool m_rbShowTrackedDevice[vr::k_unMaxTrackedDeviceCount];
 	std::string m_strDriver;
 	std::string m_strDisplay;
@@ -89,7 +89,7 @@ public:
 	bool CreateFrameBuffer(int nWidth, int nHeight, FramebufferDesc &framebufferDesc);
 
 	//头盔位置和手柄位置，手柄数量
-	mat4 HMDPose, HMDPoseInverse, m_mat4Contraller1Pose, m_mat4Contraller2Pose;
+	glm::mat4 HMDPose, HMDPoseInverse, m_mat4Contraller1Pose, m_mat4Contraller2Pose;
 	int controllerNum;
 
 	bool press_button;
