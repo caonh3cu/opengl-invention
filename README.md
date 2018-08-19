@@ -34,3 +34,5 @@ IDE用的vs2015-c++ 32位debug/relese（一定要切到x86才能运行起来，�
 首先要解压includeAndLib64.zip到所在目录,然后vs里需要设置一下路径和lib的引用<br/>
 另外<b>一定要把includeAndLib64里面的dll拿出来替换掉\VREngine\VREngine下的dll，因为那里面的dll还是32位的！！！</b>
 ps:代码不用改，但是32位和64位用的各个库版本不一定相同，不知道会不会出什么问题ヽ(￣▽￣)ﾉ
+
+8-19：glm和opencv冲突(╯‵□′)╯︵┻━┻，无法using namespace glm;所以我把项目里面所有using glm都删了，相应地要把所有用到的glm里的函数前面加上glm::累死我了(╯‵□′)╯︵┻━┻，还好文件不多，除了scene都改完上传了scene里面自带using不会出错，而如果以后的scene<b>想加opencv就不要using glm！！</b>
