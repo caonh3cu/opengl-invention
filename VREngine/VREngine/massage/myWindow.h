@@ -20,6 +20,11 @@ using namespace std;
 // GLFW
 #include <GLFW/glfw3.h>
 
+//massageç±»ï¼šå•ä¾‹ç±»ï¼ŒåŸºäºglfwå†™çš„çª—å£ç±»ï¼Œåˆ›å»ºçª—å£ï¼Œè·å–é”®ç›˜é¼ æ ‡æ¶ˆæ¯
+//å…¶ä¸­myWindowç±»ä¸­æœ‰ä¸€ä¸ªæ¶ˆæ¯é˜Ÿåˆ—messagePumpï¼Œæ¥æ”¶å„ç±»æ¶ˆæ¯ï¼Œæ”¾å…¥é˜Ÿåˆ—ï¼Œè¦ç”¨çš„æ—¶å€™ä¾æ¬¡è¯»å–å°±å¥½
+//é”®ç›˜äº‹ä»¶å€Ÿç”¨çš„glfwçš„å®ï¼Œé¼ æ ‡æ˜¯è‡ªå·±å®šä¹‰çš„æšä¸¾ç±»å‹åœ¨ä»£ç é‡Œæœ‰å†™
+//
+//è¯»å–é¼ æ ‡ä½ç½®æœ¬èº«å¥½ç”¨ï¼Œä½†æ˜¯å’Œè®¾ç½®é¼ æ ‡ä½ç½®é…åˆç”¨å°±ä¼šæœ‰bug(â•¯ï¸µâ•°)
 namespace Mymassage {
 	static char msg[128];
 	static GLint width, height;
@@ -33,20 +38,20 @@ namespace Mymassage {
 
 	class MyWindow {
 	public:
-		//³õÊ¼»¯window£¬´«Èë¿í¸ß´°¿ÚÃû£¬·µ»Ø¶ÔÏóÖ¸Õë
+		//åˆå§‹åŒ–windowï¼Œä¼ å…¥å®½é«˜çª—å£åï¼Œè¿”å›å¯¹è±¡æŒ‡é’ˆ
 		static MyWindow *InitWindow(int width, int height, string name) {
 			if (instance == NULL) {
 				instance = new MyWindow(width, height, name);
 			}
 			return instance;
 		}
-		//»ñÈ¡Î¨Ò»ÊµÀıÖ¸Õë
+		//è·å–å”¯ä¸€å®ä¾‹æŒ‡é’ˆ
 		static MyWindow *getInstance() {
 			if (instance == NULL)
 				instance = new MyWindow();
 			return instance;
 		}
-		//ÉèÖÃÊó±êÎ»ÖÃ£¬×ø±êÊÇµ½´°¿Ú×óÉÏµÄÏñËØÊıÁ¿
+		//è®¾ç½®é¼ æ ‡ä½ç½®ï¼Œåæ ‡æ˜¯åˆ°çª—å£å·¦ä¸Šçš„åƒç´ æ•°é‡
 		void setCursorPos(double x, double y) {
 			glfwSetCursorPos(window, x, y);
 		}
@@ -56,7 +61,7 @@ namespace Mymassage {
 		void close() {
 			glfwTerminate();
 		}
-		//Ã¿´ÎäÖÈ¾Íêµ÷ÓÃ
+		//æ¯æ¬¡æ¸²æŸ“å®Œè°ƒç”¨
 		void flush() {
 			glfwSwapBuffers(window);
 			glfwPollEvents();
@@ -75,16 +80,16 @@ namespace Mymassage {
 			};
 			union Value {
 				Value(){}
-				//Êó±êÊÂ¼ş
+				//é¼ æ ‡äº‹ä»¶
 				MauseEvent mouse;
-				//¼üÅÌÊÂ¼ş£¬Öµ½èÓÃÁËglfwÔ¤¶¨ÒåµÄºê£¬ÈçGLFW_KEY_W¡¢GLFW_KEY_SPACE
+				//é”®ç›˜äº‹ä»¶ï¼Œå€¼å€Ÿç”¨äº†glfwé¢„å®šä¹‰çš„å®ï¼Œå¦‚GLFW_KEY_Wã€GLFW_KEY_SPACE
 				int value;
 				glm::vec2 pos;
 			};
 			Type type;
 			Value value;
 		};
-		//ÏûÏ¢¶ÓÁĞ£¬´ÓÖĞ¶ÁÈ¡¸÷ÀàÏûÏ¢£¬ÈçÉÏMessageÀà
+		//æ¶ˆæ¯é˜Ÿåˆ—ï¼Œä»ä¸­è¯»å–å„ç±»æ¶ˆæ¯ï¼Œå¦‚ä¸ŠMessageç±»
 		queue<Message> messagePump;
 	private:
 		static MyWindow* instance;
