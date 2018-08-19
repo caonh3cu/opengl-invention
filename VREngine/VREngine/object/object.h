@@ -10,7 +10,7 @@ using namespace std;
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-using namespace glm;
+//using namespace glm;
 
 #ifndef GLEW_STATIC
 #define GLEW_STATIC  
@@ -29,21 +29,21 @@ public:
 		modelMat(1.0f){	}
 	string name;
 	pair<int,int> meshIndex;
-	void setModelMat(mat4 mat) { modelMat = mat; }
-	void translate(vec3 v) { pos += v; calculatModelMat(); }
-	void setPos(vec3 v) { pos = v; calculatModelMat();}
-	void rotate(float _angle, vec3 _axis) { angle = _angle; axis = _axis; calculatModelMat(); }
-	void scale(vec3 v) { this->scalev = vec3(this->scalev.x*v.x, this->scalev.y*v.y, this->scalev.z*v.z); calculatModelMat(); }
-	mat4 getModelMat() { return modelMat; }
+	void setModelMat(glm::mat4 mat) { modelMat = mat; }
+	void translate(glm::vec3 v) { pos += v; calculatModelMat(); }
+	void setPos(glm::vec3 v) { pos = v; calculatModelMat();}
+	void rotate(float _angle, glm::vec3 _axis) { angle = _angle; axis = _axis; calculatModelMat(); }
+	void scale(glm::vec3 v) { this->scalev = glm::vec3(this->scalev.x*v.x, this->scalev.y*v.y, this->scalev.z*v.z); calculatModelMat(); }
+	glm::mat4 getModelMat() { return modelMat; }
 protected:
-	vec3 pos;
-	vec3 scalev;
+	glm::vec3 pos;
+	glm::vec3 scalev;
 	float angle;
-	vec3 axis;
-	mat4 modelMat;
+	glm::vec3 axis;
+	glm::mat4 modelMat;
 	void calculatModelMat() {
-		mat4 mat(1.0f);
-		mat = glm::translate(mat4(1.0f), pos)*glm::rotate(mat4(1.0f), angle, axis)*glm::scale(mat4(1.0f), this->scalev)*mat;
+		glm::mat4 mat(1.0f);
+		mat = glm::translate(glm::mat4(1.0f), pos)*glm::rotate(glm::mat4(1.0f), angle, axis)*glm::scale(glm::mat4(1.0f), this->scalev)*mat;
 		modelMat = mat;
 	}
 };
