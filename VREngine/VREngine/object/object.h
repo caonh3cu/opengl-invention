@@ -18,6 +18,10 @@ using namespace std;
 #include <GL/glew.h> 
 #include "../AssetManager/AssetManager.h"
 
+//object类：比较简单了就，只实现了基本功能，物体的各种变换，绑定网格
+//另外顺便写了物体管理器，更简单了，只是够现在用
+//
+//配套的写了light类（与示例shader匹配的）和camera类，都是刚好能用的。
 class Object {
 public:
 	Object(string _name = "") :
