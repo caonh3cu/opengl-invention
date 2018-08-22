@@ -14,7 +14,7 @@ void ObjectManager::readConfig(string config) {
 		if (operation.compare("model") == 0) {
 			configStream >> values1 >> values2 >> valuei;
 			Object to(values1);
-			to.scale(glm::vec3(1, 1, -1));
+			to.scale(glm::vec3(1, 1, 1));
 			to.meshIndex = AssetManager::getInstance()->meshGroups[values1];
 			objects[values1] = to;
 			cout << "name: " << values1 << "  mesh index:" << to.meshIndex.first << " to " << to.meshIndex.second << endl;
