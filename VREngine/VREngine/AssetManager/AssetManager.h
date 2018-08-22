@@ -26,6 +26,9 @@ using namespace std;
 #include "ModelClass\mesh.h"
 
 
+#include "../object/object.h" 
+#include <thread>
+#include <windows.h>
 
 //AssetManager类：单例类，基于assimp的模型导入类，可以导入材质、纹理，也可以导入shader，并对材质和相应shader进行绑定以供渲染
 //其中材质支持：
@@ -51,12 +54,14 @@ public:
 	}
 	//读配置信息，根据配置导入模型、材质、贴图，编译着色器
 	void readConfig(string configStream);
+	//并行读
+	void readConfigStreaming(string configStream);
 	//加载模型
 	void loadMesh(string name, string path, bool isLoadMeterial);
+	void loadMeterial(Meterial &m);
 private:
 	void processNode(string path, aiNode* node, const aiScene* scene, bool isLoadMeterial);
 	void processMesh(string path, aiMesh* mesh, const aiScene* scene, bool isLoadMeterial);
-	void loadMeterial(Meterial &m);
 private:
 	static AssetManager* instance;
 	

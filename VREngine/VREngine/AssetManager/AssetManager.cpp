@@ -11,19 +11,7 @@ void AssetManager::readConfig(string config) {
 	int valuei;
 	configStream >> operation;
 	while (operation.compare("end") != 0) {
-		if (operation.compare("model") == 0) {
-			configStream >> values1>>values2>>valuei;
-			map<string, pair<int, int> >::iterator tit = meshGroups.find(values1);
-			if (tit == meshGroups.end()) {
-				if (valuei == 0)
-					loadMesh(values1, values2, false);
-				else
-					loadMesh(values1, values2, true);
-			}
-			else
-				cout << "model name not unique: " << values1 << endl;
-		}
-		else if (operation.compare("shader") == 0) {
+		if (operation.compare("shader") == 0) {
 			configStream >> values1>>valuei;
 			if (valuei == 2) {
 				configStream >> values2 >> values3; 
@@ -37,6 +25,18 @@ void AssetManager::readConfig(string config) {
 					cout << "shader program name not unique: " << values1 << endl;
 				}
 			}
+		}
+		else if (operation.compare("model") == 0) {
+			configStream >> values1 >> values2 >> valuei;
+			map<string, pair<int, int> >::iterator tit = meshGroups.find(values1);
+			if (tit == meshGroups.end()) {
+				if (valuei == 0)
+					loadMesh(values1, values2, false);
+				else
+					loadMesh(values1, values2, true);
+			}
+			else
+				cout << "model name not unique: " << values1 << endl;
 		}
 		configStream >> operation;
 	}
@@ -66,6 +66,10 @@ void AssetManager::loadMesh(string name, string path, bool isLoadMeterial) {
 	processNode(dir,scene->mRootNode, scene, isLoadMeterial);
 	end = meshes.size();
 	meshGroups[name] = make_pair(start, end);
+
+	Object to(name);
+	to.meshIndex = meshGroups[name];
+	ObjectManager::getInstance()->objects[name] = to;
 }
 
 void AssetManager::processNode(string path, aiNode* node, const aiScene* scene, bool isLoadMeterial)
@@ -217,7 +221,7 @@ void AssetManager::processMesh(string path, aiMesh* mesh, const aiScene* scene, 
 					meterial.emissivePath = path + "/" + textPath.C_Str();
 					meterial.hasEmissive = true;
 				}
-				loadMeterial(meterial);
+				//loadMeterial(meterial);
 				this->meterials[name.C_Str()] = meterial;
 			}
 
@@ -310,4 +314,14 @@ void AssetManager::loadMeterial(Meterial &m) {
 			textures[m.emissivePath] = tt;
 		}
 	}
+}
+
+
+void readThread(string configStream)
+{
+	AssetManager::getInstance()->readConfig(configStream);
+}
+void AssetManager::readConfigStreaming(string configStream) {
+	thread task(readThread, configStream);
+	task.detach();
 }

@@ -46,13 +46,17 @@ public:
 	{
 		this->vertices = _vertices;
 		this->indices = _indices;
-		// Now that we have all the required data, set the vertex buffers and its attribute pointers.
-		this->setupMesh();
+
+		Set = false;
 	}
 
 	// Render the mesh,no bind shader
 	void Draw()
 	{
+		if (!Set) {
+			this->setupMesh();
+			Set = true;
+		}
 		// Draw mesh
 		glBindVertexArray(this->VAO);
 		glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
@@ -62,6 +66,7 @@ public:
 private:
 	/*  Render data  */
 	GLuint VAO, VBO, EBO;
+	bool Set;
 
 	/*  Functions    */
 	// Initializes all the buffer objects/arrays
@@ -96,6 +101,8 @@ private:
 
 		glBindVertexArray(0);
 	}
+
+
 };
 
 
