@@ -311,3 +311,9 @@ void AssetManager::loadMeterial(Meterial &m) {
 		}
 	}
 }
+void AssetManagerStreaming::loadMesh(string name, string path, bool isLoadMeterial) {
+	AssetManager::loadMesh(name, path, isLoadMeterial);
+	Object to(name);
+	to.meshIndex = meshGroups[name];
+	ObjectManager::getInstance()->objects[name] = to;
+}
