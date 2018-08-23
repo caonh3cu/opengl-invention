@@ -28,9 +28,11 @@ void Loader::load(string fileName) {
 	string modelString = "", shaderString = "",setString = "";
 	int modC = 0, shaderC = 0, setC = 0;
 
-	configStream >> operation;
-	while (operation.compare("end") != 0) {
-		if (operation.compare("model") == 0) {
+	while (configStream >> operation) {
+		if (operation.substr(0, 2).compare("//") == 0) {
+			getline(configStream, operation);
+		}
+		else if (operation.compare("model") == 0) {
 			modC++;
 			configStream >> values1 >> values2 >> values3;
 			modelString += "model " + values1 + " " + values2 + " " + values3 + "\n";
@@ -55,7 +57,6 @@ void Loader::load(string fileName) {
 		else {
 			cout << "not understand operation" << operation << endl;
 		}
-		configStream >> operation;
 	}
 
 	stringMap["model"] = modelString;
