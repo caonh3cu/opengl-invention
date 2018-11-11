@@ -61,7 +61,7 @@ public:
 		}
 		return instance;
 	}
-	void readConfig(string config); 
+	void readConfig(MyLoader::Node* node);
 	void ObjectManager::drawObject(string name, GLuint shader);
 	map<string,Object> objects;
 private:
