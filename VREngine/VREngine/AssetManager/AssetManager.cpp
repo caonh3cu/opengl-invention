@@ -3,49 +3,76 @@
 
 AssetManager* AssetManager::instance = NULL;
 
-void AssetManager::readConfig(string config) {
-	cout << "loading meshes" << endl;
-	stringstream configStream;
-	configStream.str(config);
-	string operation, values1, values2, values3;
-	int valuei;
-	configStream >> operation;
-	while (operation.compare("end") != 0) {
-		if (operation.compare("model") == 0) {
-			configStream >> values1>>values2>>valuei;
-			map<string, pair<int, int> >::iterator tit = meshGroups.find(values1);
-			if (tit == meshGroups.end()) {
-				if (valuei == 0)
-					loadMesh(values1, values2, false);
-				else
-					loadMesh(values1, values2, true);
-			}
-			else
-				cout << "model name not unique: " << values1 << endl;
+void AssetManager::readConfig(MyLoader::Node* node) {
+	if (node->name.compare("shader") == 0) {
+		MyLoader::Node *tnode = node->getNode("name");
+		if (tnode == NULL) {
+			cout << "config error::line" << node->lineNum << " the <shader> don't have <name>" << endl;
+			return;
 		}
-		else if (operation.compare("shader") == 0) {
-			configStream >> values1>>valuei;
-			if (valuei == 2) {
-				configStream >> values2 >> values3; 
-				map<string, GLuint>::iterator tit = shaderPrograms.find(values1);
-				if (tit == shaderPrograms.end()) {
-					GLuint vs = Shader::compileShader(values2, Shader::shaderType::vertexShader);
-					GLuint fs = Shader::compileShader(values3, Shader::shaderType::fragmentShader);
-					this->shaderPrograms[values1] = Shader(vs, fs).Program;
-				}
-				else {
-					cout << "shader program name not unique: " << values1 << endl;
-				}
+		string name = tnode->value;
+		map<string, GLuint>::iterator tit = shaderPrograms.find(name);
+		if (tit == shaderPrograms.end()) {
+			string vertex, fragment;
+			MyLoader::Node *tnode = node->getNode("vertex");
+			if (tnode == NULL) {
+				cout << "config error::line" << node->lineNum << " the <shader> don't have <vertex>" << endl;
+				return;
 			}
+			vertex = tnode->value;
+			tnode = node->getNode("fragment");
+			if (tnode == NULL) {
+				cout << "config error::line" << node->lineNum << " the <shader> don't have <fragment>" << endl;
+				return;
+			}
+			fragment = tnode->value;
+			GLuint vs = Shader::compileShader(vertex, Shader::shaderType::vertexShader);
+			GLuint fs = Shader::compileShader(fragment, Shader::shaderType::fragmentShader);
+			this->shaderPrograms[name] = Shader(vs, fs).Program;
+			
+			cout << "compile " << name << " with vertex:" << vertex << "  fragment:" << fragment << endl;
 		}
-		configStream >> operation;
+		else {
+			cout << "shader program name not unique: " << name << endl;
+		}
 	}
-	cout << "Loaded :" << endl;
-	cout << meshGroups.size() << " meshGroups" << endl;
-	cout << meshes.size() << " meshes" << endl;
-	cout << meterials.size() << " meterials" << endl;
-	cout << textures.size() << " textures" << endl;
-	cout << shaderPrograms.size() << " shaderPrograms" << endl;
+	else if (node->name.compare("model") == 0) {
+
+		MyLoader::Node *tnode = node->getNode("name");
+		if (tnode == NULL) {
+			cout << "config error::line" << node->lineNum << " the <model> don't have <name>" << endl;
+			return;
+		}
+		string name = tnode->value;
+		map<string, pair<int, int> >::iterator tit = meshGroups.find(name);
+		if (tit == meshGroups.end()) {
+			string path;
+			MyLoader::Node *tnode = node->getNode("path");
+			if (tnode == NULL) {
+				cout << "config error::line" << node->lineNum << " the <model> don't have <path>" << endl;
+				return;
+			}
+			path = tnode->value;
+			tnode = node->getNode("isLoadTexture");
+			if (tnode == NULL || tnode->value.compare("false") == 0) {
+				loadMesh(name, path, false);
+				cout << "load " << name << " path:" << path << "  is load texture: false" << endl;
+			}
+			else {
+				loadMesh(name, path, true);
+				cout << "load " << name << " path:" << path << "  is load texture: true" << endl;
+			}
+
+		}
+		else {
+			cout << "model name not unique: " << name << endl;
+		}
+	}
+
+	cout << "Loaded :";
+	cout << meshes.size() << " meshes  ";
+	cout << meterials.size() << " meterials  ";
+	cout << textures.size() << " textures  " << endl;
 }
 
 void AssetManager::loadMesh(string name, string path, bool isLoadMeterial) {

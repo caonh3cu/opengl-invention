@@ -24,6 +24,7 @@ using namespace std;
 #include "ModelClass/Shader.h"
 #include "ModelClass\meterial.h"
 #include "ModelClass\mesh.h"
+#include "Loader.h"
 
 
 
@@ -50,7 +51,7 @@ public:
 		return instance;
 	}
 	//读配置信息，根据配置导入模型、材质、贴图，编译着色器
-	void readConfig(string configStream);
+	void readConfig(MyLoader::Node* node);
 	//加载模型
 	void loadMesh(string name, string path, bool isLoadMeterial);
 private:
