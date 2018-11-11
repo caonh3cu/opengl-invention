@@ -2,9 +2,11 @@
 #include "scene.h"
 void Scene::init() {
 
-	Loader loader;
+	MyLoader::Loader loader;
 	loader.load("config.txt");
-	readSet(loader.stringMap["set"] + "end\n");
+	vector<MyLoader::Node*> tn = loader.root.getNodes("set");
+	for(int i=0;i<tn.size();i++)
+		readSet(tn[i]);
 	
 	if (hasVR)
 		width = 450;
@@ -23,9 +25,18 @@ void Scene::init() {
 
 
 	AssetManager *am = AssetManager::getInstance();
-	ObjectManager *om = ObjectManager::getInstance();
-	am->readConfig(loader.stringMap["model"] + loader.stringMap["shader"] + "end\n");
-	om->readConfig(loader.stringMap["model"] + "end\n");
+	ObjectManager *om = ObjectManager::getInstance(); 
+	
+	vector<MyLoader::Node*> tnm,tns;
+	tnm = loader.root.getNodes("model");
+	tns = loader.root.getNodes("shader");
+	for (int i = 0; i < tnm.size(); i++) {
+		//顺序不能反过来
+		am->readConfig(tnm[i]);
+		om->readConfig(tnm[i]);
+	}
+	for (int i = 0; i<tns.size(); i++)
+		am->readConfig(tns[i]);
 	shader = am->shaderPrograms["roll"]; 
 	shaderBox = am->shaderPrograms["box"];
 	light.position = vec3(-5, 5, 5);
@@ -49,25 +60,11 @@ void Scene::init() {
 
 }
 
-void Scene::readSet(string config) {
-	stringstream configStream;
-	configStream.str(config);
-	string operation, values1, values2, values3;
-	int valuei;
-	configStream >> operation;
-	while (operation.compare("end") != 0) {
-		if (operation.compare("set") == 0) {
-			configStream >> values1 >> values2;
-			if (values1.compare("hasVR") == 0) {
-				if (values2.compare("true") == 0)
-					hasVR = true;
-				else
-					hasVR = false;
-				cout << "set hasVR:" << hasVR << endl;
-			}
-		}
-		configStream >> operation;
-	}
+void Scene::readSet(MyLoader::Node* node) {
+	MyLoader::Node* tn = node->getNode("hasVR");
+	string value = tn->value;
+	hasVR = (value.compare("true") == 0);
+	cout << "set " << " hasVR" << " " << (value.compare("true") == 0) << std::endl;
 }
 
 void Scene::run() {

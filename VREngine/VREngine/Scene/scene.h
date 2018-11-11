@@ -89,7 +89,7 @@ private:
 
 	//¼ÇÂ¼µÄÎÄ¼þÁ÷
 	ofstream os;
-	void readSet(string config);
+	void readSet(MyLoader::Node* node);
 	bool hasVR;
 
 	Mymassage::MyWindow* window;
