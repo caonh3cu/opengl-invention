@@ -47,7 +47,7 @@ bool MyFramebuffer::createDepthTexture() {
 	glGenTextures(1, &DepthBufferId);
 	glBindTexture(GL_TEXTURE_2D, DepthBufferId);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-	//��ѡ
+	//¿ÉÑ¡
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -76,5 +76,10 @@ void MyFramebuffer::readColor() {
 void MyFramebuffer::saveToFile(int i) {
 	char fname[100];
 	sprintf_s(fname, "data/img/%d.bmp", i);
+	SOIL_save_image(fname, SOIL_SAVE_TYPE_BMP, width, height, 4, imageData);
+}
+void MyFramebuffer::saveToFile(string path) {
+	char fname[100];
+	sprintf_s(fname, "data/lightMap/%s.bmp", path.c_str());
 	SOIL_save_image(fname, SOIL_SAVE_TYPE_BMP, width, height, 4, imageData);
 }
