@@ -10,11 +10,11 @@
 #include <string>
 using namespace std;
 
-//Ö¡»º´æÀà£¬ÓÃ³¤¿í³õÊ¼»¯£¬½¨Á¢Ò»¸öframebuffer
-//createNormal()½«framebuffer¹ØÁªµ½3¸örenderbuffer£¬color¡¢depth¡¢stencil¸÷Ò»¸ö£¬²¢ÉêÇëÏàÓ¦´óĞ¡ÄÚ´æ¿Õ¼äÓÃÓÚ±£´æÑÕÉ«Ö¡Êı¾İ
-//createDepthTexture()ÊÇ½«framebuffer¹ØÁªµ½Ò»¸öÉî¶ÈµÄÌùÍ¼£¬ĞèÔÚcreateNormal()µ÷ÓÃÖ®Ç°µ÷ÓÃ²ÅºÃÊ¹
-//readColor()¿É½«Ö¡»º´æÄÚÈİ´æÈëÉùÃ÷µÄÊı×éimageDataÀïÃæ£¬saveToFile(int FrameNumber)ÊÇ°ÑimageDataÀïÃæÊı¾İ±£´æ³ÉÍ¼Æ¬
-///¸ù¾İcreateDepthTexture()ÀàËÆµÄ¿ÉÒÔ±àĞ´¹ØÁªÑÕÉ«ÌùÍ¼£¬ÕâÀïÃ»ÓĞ¾ßÌåÊµÏÖ£¬Êµ¼Ê¿ÉÒÔ¸ù¾İÇé¿ö¸ÄĞ´
+//å¸§ç¼“å­˜ç±»ï¼Œç”¨é•¿å®½åˆå§‹åŒ–ï¼Œå»ºç«‹ä¸€ä¸ªframebuffer
+//createNormal()å°†framebufferå…³è”åˆ°3ä¸ªrenderbufferï¼Œcolorã€depthã€stencilå„ä¸€ä¸ªï¼Œå¹¶ç”³è¯·ç›¸åº”å¤§å°å†…å­˜ç©ºé—´ç”¨äºä¿å­˜é¢œè‰²å¸§æ•°æ®
+//createDepthTexture()æ˜¯å°†framebufferå…³è”åˆ°ä¸€ä¸ªæ·±åº¦çš„è´´å›¾ï¼Œéœ€åœ¨createNormal()è°ƒç”¨ä¹‹å‰è°ƒç”¨æ‰å¥½ä½¿
+//readColor()å¯å°†å¸§ç¼“å­˜å†…å®¹å­˜å…¥å£°æ˜çš„æ•°ç»„imageDataé‡Œé¢ï¼ŒsaveToFile(int FrameNumber)æ˜¯æŠŠimageDataé‡Œé¢æ•°æ®ä¿å­˜æˆå›¾ç‰‡
+///æ ¹æ®createDepthTexture()ç±»ä¼¼çš„å¯ä»¥ç¼–å†™å…³è”é¢œè‰²è´´å›¾ï¼Œè¿™é‡Œæ²¡æœ‰å…·ä½“å®ç°ï¼Œå®é™…å¯ä»¥æ ¹æ®æƒ…å†µæ”¹å†™
 class MyFramebuffer {
 public:
 	int width;
@@ -36,11 +36,13 @@ public:
 		if (StencilBufferId != 0)
 			glDeleteBuffers(1, &StencilBufferId);
 	}
-	//È«´´½¨Îªrenderbuffer,idÎª0²Å»á´´½¨¶ÔÓ¦¶ÔÏó
+	void bind() { glBindFramebuffer(GL_FRAMEBUFFER, FramebufferId); }
+	void unBind() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
+	//å…¨åˆ›å»ºä¸ºrenderbuffer,idä¸º0æ‰ä¼šåˆ›å»ºå¯¹åº”å¯¹è±¡
 	bool createNormal();
 	bool createDepthTexture();
 
-	//Ä¬ÈÏStencilÊÇrenderbuffer
+	//é»˜è®¤Stencilæ˜¯renderbuffer
 	GLuint DepthBufferId;
 	bool isDepthTexture;
 	GLuint ColorBufferId;
