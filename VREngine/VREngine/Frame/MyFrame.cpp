@@ -80,6 +80,6 @@ void MyFramebuffer::saveToFile(int i) {
 }
 void MyFramebuffer::saveToFile(string path) {
 	char fname[100];
-	sprintf_s(fname, "data/lightMap/%s.bmp", path.c_str());
+	sprintf_s(fname, "data/%s.bmp", path.c_str());
 	SOIL_save_image(fname, SOIL_SAVE_TYPE_BMP, width, height, 4, imageData);
 }
