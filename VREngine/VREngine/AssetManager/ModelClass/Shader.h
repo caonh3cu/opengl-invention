@@ -10,12 +10,38 @@
 #endif // !GLEW_STATIC
 #include <GL/glew.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class Shader
 {
 public:
 	GLuint Program;
 	// Constructor generates the shader on the fly
+	Shader() { Program = 0; }
+	Shader(Shader &s) { Program = s.Program; }
+	Shader &operator=(Shader&s) { Program = s.Program; return *this; }
+	Shader(string vertex,string fragment) { 
+		GLuint vs = Shader::compileShader(vertex, Shader::shaderType::vertexShader);
+		GLuint fs = Shader::compileShader(fragment, Shader::shaderType::fragmentShader);
+		// Shader Program
+		this->Program = glCreateProgram();
+		glAttachShader(this->Program, vs);
+		glAttachShader(this->Program, fs);
+		glLinkProgram(this->Program);
+
+		// Print linking errors if any
+		GLint success;
+		GLchar infoLog[512];
+		glGetProgramiv(this->Program, GL_LINK_STATUS, &success);
+		if (!success)
+		{
+			glGetProgramInfoLog(this->Program, 512, NULL, infoLog);
+			std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+		}
+	}
+	
 	Shader(GLuint vertex, GLuint fragment)
 	{
 		// Shader Program
@@ -35,7 +61,11 @@ public:
 		}
 	}
 
-	GLuint getUniformLocation(const char *s) { return glGetUniformLocation(Program, s); }
+	void use() { glUseProgram(Program); }
+	void setMat4(const char *s, glm::mat4 &value) { glUniformMatrix4fv(glGetUniformLocation(Program, s), 1, GL_FALSE, &(value)[0][0]); }
+	void set3f(const char *s, glm::vec3 &value) { glUniform3fv(glGetUniformLocation(Program, s), 1, &(value)[0]); }
+	void set3f(const char *s, glm::vec4 &value) { glUniform3fv(glGetUniformLocation(Program, s), 1, &(value)[0]); }
+	void setInt(const char *s, GLint value) { glUniform1i(glGetUniformLocation(Program, s), value); }
 
 
 	enum shaderType{vertexShader,fragmentShader};

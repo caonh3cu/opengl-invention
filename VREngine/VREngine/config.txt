@@ -1,7 +1,39 @@
-model migong data/models/bed.obj 1
-model box data/models/sky_sphere.obj 1
-model floor data/models/floor.obj 1
-shader roll 2 shader/roll.vs shader/roll.fs 
-shader box 2 shader/box_shader.vs shader/box_shader.fs 
-set hasVR false
-end
+<地板/>
+<model>
+	<name>floor</name>
+	<path>data/models/floor.obj</path>
+	<isLoadTexture>true</isLoadTexture>
+</model>
+
+<天空盒/>
+<model>
+	<name>box</name>
+	<path>data/models/sky_sphere.obj</path>
+	<isLoadTexture>true</isLoadTexture>
+</model>
+
+<一个床一个柜/>
+<model>
+	<name>migong</name>
+	<path>data/models/bed.obj</path>
+	<isLoadTexture>true</isLoadTexture>
+</model>
+
+<模型shader/>
+<shader>
+	<name>roll</name>
+	<fragment>shader/roll.fs</fragment>
+	<vertex>shader/roll.vs</vertex>
+</shader>
+
+<天空盒的shader/>
+<shader>
+	<name>box</name>
+	<vertex>shader/box_shader.vs</vertex>
+	<fragment>shader/box_shader.fs</fragment>
+</shader>
+
+<是否使用VR头盔/>
+<set>
+	<hasVR>false</hasVR>
+</set>

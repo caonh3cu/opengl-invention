@@ -79,7 +79,7 @@ private:
 private:
 	int width, height;
 	enum State {
-		W = 0, A = 1, S = 2, D = 3, Q = 4, E = 5, P = 6,
+		W = 0, A = 1, S = 2, D = 3, P = 4, UP = 5, DOWN = 6, LEFT = 7, RIGHT = 8, 
 		isOutFileOpen = 7, SPACE = 10,gameStart = 11
 	};
 	const static int STATE_NUM = 20;
@@ -95,7 +95,7 @@ private:
 	Mymassage::MyWindow* window;
 	int frameNum;
 
-	GLuint shader, shaderBox;
+	Shader shader, shaderBox;
 	SpecialCamera camera;
 	Camera cameraNoVR;
 	Light light;

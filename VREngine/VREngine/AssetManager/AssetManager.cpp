@@ -11,7 +11,7 @@ void AssetManager::readConfig(MyLoader::Node* node) {
 			return;
 		}
 		string name = tnode->value;
-		map<string, GLuint>::iterator tit = shaderPrograms.find(name);
+		map<string, Shader>::iterator tit = shaderPrograms.find(name);
 		if (tit == shaderPrograms.end()) {
 			string vertex, fragment;
 			MyLoader::Node *tnode = node->getNode("vertex");
@@ -26,9 +26,7 @@ void AssetManager::readConfig(MyLoader::Node* node) {
 				return;
 			}
 			fragment = tnode->value;
-			GLuint vs = Shader::compileShader(vertex, Shader::shaderType::vertexShader);
-			GLuint fs = Shader::compileShader(fragment, Shader::shaderType::fragmentShader);
-			this->shaderPrograms[name] = Shader(vs, fs).Program;
+			this->shaderPrograms[name] = Shader(vertex, fragment);
 			
 			cout << "compile " << name << " with vertex:" << vertex << "  fragment:" << fragment << endl;
 		}

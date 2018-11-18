@@ -90,6 +90,9 @@
     <ClInclude Include="Scene\2dScene.h">
       <Filter>code\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="AssetManager\Loader.h">
+      <Filter>code\AssetManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\shader1.fs">

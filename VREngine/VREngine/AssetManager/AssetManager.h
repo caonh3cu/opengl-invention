@@ -68,7 +68,7 @@ public:
 	map<string ,pair<int, int> > meshGroups;
 
 	//着色器表，名字-对象
-	map<string,GLuint> shaderPrograms;
+	map<string,Shader> shaderPrograms;
 
 	//材质表,贴图唯一，材质名唯一
 	map<string,Meterial> meterials;

@@ -144,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetManager\AssetManager.h" />
+    <ClInclude Include="AssetManager\Loader.h" />
     <ClInclude Include="AssetManager\ModelClass\mesh.h" />
     <ClInclude Include="AssetManager\ModelClass\meterial.h" />
     <ClInclude Include="AssetManager\ModelClass\Shader.h" />

@@ -1,18 +1,21 @@
 
 #include "scene.h"
 void Scene::init() {
-
+	//read config
 	MyLoader::Loader loader;
 	loader.load("config.txt");
 	vector<MyLoader::Node*> tn = loader.root.getNodes("set");
+	// set some value
 	for(int i=0;i<tn.size();i++)
 		readSet(tn[i]);
 	
+	//has vr or not
 	if (hasVR)
 		width = 450;
 	else
 		width = 900 + 450;
 	height = 900;
+	//create the window
 	window = Mymassage::MyWindow::InitWindow(width, height, "driver");
 	// Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
 	glewExperimental = GL_TRUE;
@@ -23,20 +26,24 @@ void Scene::init() {
 		return;
 	}
 
-
+	//asset manager and object manager
 	AssetManager *am = AssetManager::getInstance();
 	ObjectManager *om = ObjectManager::getInstance(); 
 	
 	vector<MyLoader::Node*> tnm,tns;
 	tnm = loader.root.getNodes("model");
 	tns = loader.root.getNodes("shader");
-	for (int i = 0; i < tnm.size(); i++) {
-		//顺序不能反过来
-		am->readConfig(tnm[i]);
-		om->readConfig(tnm[i]);
-	}
+	//compile shader
 	for (int i = 0; i<tns.size(); i++)
 		am->readConfig(tns[i]);
+	for (int i = 0; i < tnm.size(); i++) {
+		//顺序不能反过来
+		//load meshes
+		am->readConfig(tnm[i]);
+		//create object with mesh
+		om->readConfig(tnm[i]);
+	}
+	//get shader id
 	shader = am->shaderPrograms["roll"]; 
 	shaderBox = am->shaderPrograms["box"];
 	light.position = vec3(-5, 5, 5);
@@ -62,6 +69,7 @@ void Scene::init() {
 
 void Scene::readSet(MyLoader::Node* node) {
 	MyLoader::Node* tn = node->getNode("hasVR");
+	if (tn == NULL)return;
 	string value = tn->value;
 	hasVR = (value.compare("true") == 0);
 	cout << "set " << " hasVR" << " " << (value.compare("true") == 0) << std::endl;
@@ -106,33 +114,33 @@ void Scene::run() {
 
 //画场景
 void Scene::draw(bool isLeftEye) {
-	glUseProgram(shader);
-	light.bindLight(shader);
-	glUniform3fv(glGetUniformLocation(shader, "viewPos"), 1, &(camera.getVirtulPos())[0]);
-	glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_FALSE, &(camera.getVirtualViewMatrix())[0][0]);
+	shader.use();
+	light.bindLight(shader.Program);
+	shader.set3f("viewPos", camera.getVirtulPos());
+	shader.setMat4("view", camera.getVirtualViewMatrix());
 	if (hasVR) {
-		glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE, &(vr.GetHMDMatrixProjectionEye(isLeftEye ? vr::Hmd_Eye::Eye_Left : vr::Hmd_Eye::Eye_Right, 0.1, 500))[0][0]);
-		glUniformMatrix4fv(glGetUniformLocation(shader, "eyeMat"), 1, GL_FALSE, &((vr.GetHMDMatrixPoseEye(isLeftEye ? vr::Hmd_Eye::Eye_Left : vr::Hmd_Eye::Eye_Right))[0][0]));
+		shader.setMat4("projection", vr.GetHMDMatrixProjectionEye(isLeftEye ? vr::Hmd_Eye::Eye_Left : vr::Hmd_Eye::Eye_Right, 0.1, 500));
+		shader.setMat4("eyeMat", vr.GetHMDMatrixPoseEye(isLeftEye ? vr::Hmd_Eye::Eye_Left : vr::Hmd_Eye::Eye_Right));
 	}
 	else {
-		glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE, &(cameraNoVR.getProjectionMatrix())[0][0]);
-		glUniformMatrix4fv(glGetUniformLocation(shader, "eyeMat"), 1, GL_FALSE, &(mat4(1.0f)[0][0]));
+		shader.setMat4("projection", cameraNoVR.getProjectionMatrix());
+		shader.setMat4("eyeMat", mat4(1.0f));
 	}
-	ObjectManager::getInstance()->drawObject("migong", shader);
-	ObjectManager::getInstance()->drawObject("floor", shader);
+	ObjectManager::getInstance()->drawObject("migong", shader.Program);
+	ObjectManager::getInstance()->drawObject("floor", shader.Program);
 
-	glUseProgram(shaderBox);
-	glUniform3fv(glGetUniformLocation(shaderBox, "viewPos"), 1, &(camera.getVirtulPos())[0]);
-	glUniformMatrix4fv(glGetUniformLocation(shaderBox, "view"), 1, GL_FALSE, &(camera.getRealViewMatrix())[0][0]);	
+	shaderBox.use();
+	shaderBox.set3f("viewPos", camera.getVirtulPos());
+	shaderBox.setMat4("view", camera.getRealViewMatrix());
 	if (hasVR) {
-		glUniformMatrix4fv(glGetUniformLocation(shaderBox, "projection"), 1, GL_FALSE, &(vr.GetHMDMatrixProjectionEye(isLeftEye ? vr::Hmd_Eye::Eye_Left : vr::Hmd_Eye::Eye_Right, 0.1, 500))[0][0]);
-		glUniformMatrix4fv(glGetUniformLocation(shaderBox, "eyeMat"), 1, GL_FALSE, &((vr.GetHMDMatrixPoseEye(isLeftEye ? vr::Hmd_Eye::Eye_Left : vr::Hmd_Eye::Eye_Right))[0][0]));
+		shaderBox.setMat4("projection", vr.GetHMDMatrixProjectionEye(isLeftEye ? vr::Hmd_Eye::Eye_Left : vr::Hmd_Eye::Eye_Right, 0.1, 500));
+		shaderBox.setMat4("eyeMat", vr.GetHMDMatrixPoseEye(isLeftEye ? vr::Hmd_Eye::Eye_Left : vr::Hmd_Eye::Eye_Right));
 	}
 	else {
-		glUniformMatrix4fv(glGetUniformLocation(shaderBox, "projection"), 1, GL_FALSE, &(cameraNoVR.getProjectionMatrix())[0][0]);
-		glUniformMatrix4fv(glGetUniformLocation(shaderBox, "eyeMat"), 1, GL_FALSE, &(mat4(1.0f)[0][0]));
+		shaderBox.setMat4("projection", cameraNoVR.getProjectionMatrix());
+		shaderBox.setMat4("eyeMat", mat4(1.0f));
 	}
-	ObjectManager::getInstance()->drawObject("box", shaderBox);
+	ObjectManager::getInstance()->drawObject("box", shaderBox.Program);
 }
 
 //画两个地图
@@ -190,8 +198,10 @@ bool Scene::handleInput() {
 		camera.updateView(vr.HMDPoseInverse);
 	}
 	else {
-		if (state[Q])cameraNoVR.rollLeft(0.015);
-		if (state[E])cameraNoVR.rollLeft(-0.015);
+		if (state[LEFT])cameraNoVR.rollLeft(0.015);
+		if (state[RIGHT])cameraNoVR.rollLeft(-0.015);
+		if (state[UP])cameraNoVR.rollUp(0.015);
+		if (state[DOWN])cameraNoVR.rollUp(-0.015);
 		if (state[W])cameraNoVR.move(0.01, 0);
 		if (state[S])cameraNoVR.move(-0.01, 0);
 		if (state[A])cameraNoVR.move(0, 0.01);
@@ -226,11 +236,17 @@ bool Scene::progressMessage(){
 			case GLFW_KEY_D:
 				state[D] = true;
 				break;
-			case GLFW_KEY_Q:
-				state[Q] = true;
+			case GLFW_KEY_LEFT:
+				state[LEFT] = true;
 				break;
-			case GLFW_KEY_E:
-				state[E] = true;
+			case GLFW_KEY_RIGHT:
+				state[RIGHT] = true;
+				break;
+			case GLFW_KEY_UP:
+				state[UP] = true;
+				break;
+			case GLFW_KEY_DOWN:
+				state[DOWN] = true;
 				break;
 			case GLFW_KEY_P:
 				state[P] = true;
@@ -255,11 +271,17 @@ bool Scene::progressMessage(){
 			case GLFW_KEY_D:
 				state[D] = false;
 				break;
-			case GLFW_KEY_Q:
-				state[Q] = false;
+			case GLFW_KEY_LEFT:
+				state[LEFT] = false;
 				break;
-			case GLFW_KEY_E:
-				state[E] = false;
+			case GLFW_KEY_RIGHT:
+				state[RIGHT] = false;
+				break;
+			case GLFW_KEY_UP:
+				state[UP] = false;
+				break;
+			case GLFW_KEY_DOWN:
+				state[DOWN] = false;
 				break;
 			case GLFW_KEY_SPACE:
 				state[SPACE] = false;
