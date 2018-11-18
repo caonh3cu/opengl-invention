@@ -55,5 +55,6 @@ public:
 	void readColor();
 
 	void saveToFile(int FrameNumber);
+	void saveToFile(string path);
 
 };
